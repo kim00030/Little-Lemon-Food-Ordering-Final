@@ -1,13 +1,42 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, Image, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+
 
 const OnBoardingScreen = () => {
+    const navigation = useNavigation();
+
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+    const [error, setError] = useState(false);
 
-    const handleRegister = () => {
-        // Handle registration logic
+    const handleRegister = async () => {
+        if (!firstName || !lastName || !email) {
+            setError(true);
+            return;
+        }
+
+        try {
+            const userData = {
+                firstName,
+                lastName,
+                email,
+            };
+
+            await AsyncStorage.setItem('userData', JSON.stringify(userData));
+
+            setError(false);
+
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Home' }],
+            });
+
+        } catch (e) {
+            console.error('Registration failed:', e);
+        }
     };
 
     return (
@@ -57,6 +86,13 @@ const OnBoardingScreen = () => {
                             keyboardType="email-address"
                         />
                     </View>
+
+                    {/* Error message */}
+                    {error && (
+                        <Text style={styles.errorText}>
+                            Registration unsuccessful. Please enter all data.
+                        </Text>
+                    )}
 
 
                     {/* Register Button */}
@@ -142,4 +178,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 16,
     },
+    errorText: {
+        color: 'red',
+        marginTop: 8,
+        fontWeight: 'bold',
+        paddingHorizontal: 12
+      },
 });
