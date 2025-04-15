@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, Image, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-
+import { STORAGE_KEYS } from '../constants/storageKeys';
 
 const OnBoardingScreen = () => {
     const navigation = useNavigation();
@@ -25,10 +25,10 @@ const OnBoardingScreen = () => {
                 email,
             };
 
-            await AsyncStorage.setItem('userData', JSON.stringify(userData));
+            await AsyncStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(userData));
+            await AsyncStorage.setItem(STORAGE_KEYS.IS_REGISTERED, 'true'); //save flag
 
             setError(false);
-
             navigation.reset({
                 index: 0,
                 routes: [{ name: 'Home' }],
@@ -183,5 +183,5 @@ const styles = StyleSheet.create({
         marginTop: 8,
         fontWeight: 'bold',
         paddingHorizontal: 12
-      },
+    },
 });

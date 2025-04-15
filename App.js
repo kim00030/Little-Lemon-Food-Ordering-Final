@@ -6,6 +6,7 @@ import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator, View } from 'react-native';
+import { STORAGE_KEYS } from './constants/storageKeys';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,8 +18,9 @@ export default function App() {
   useEffect(() => {
     const checkUserStatus = async () => {
       try {
-        const user = await AsyncStorage.getItem('user');
-        setIsRegistered(!!user); // true if user exists
+        //Check if user is registered previously
+        const flag = await AsyncStorage.getItem(STORAGE_KEYS.IS_REGISTERED);
+        setIsRegistered(flag === 'true');
       } catch (e) {
         console.log('Error reading user info:', e);
       } finally {
@@ -39,7 +41,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={isRegistered ? 'Home' : 'OnBoard'}>
-        <Stack.Screen name='OnBoard' component={OnBoardingScreen} options={{headerShown:false}}/>
+        <Stack.Screen name='OnBoard' component={OnBoardingScreen} options={{ headerShown: false }} />
         <Stack.Screen name='Home' component={HomeScreen} />
         <Stack.Screen name='Profile' component={ProfileScreen} />
       </Stack.Navigator>
