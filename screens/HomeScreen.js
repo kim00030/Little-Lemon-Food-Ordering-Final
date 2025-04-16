@@ -10,8 +10,9 @@ const HomeScreen = () => {
     const navigation = useNavigation();
     const [menu, setMenu] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState(null);
+    // set categries clips
     const categories = [...new Set(menu.map(item =>
         item.category.charAt(0).toUpperCase() + item.category.slice(1)
     ))];
@@ -28,6 +29,16 @@ const HomeScreen = () => {
     if (loading) {
         return <ActivityIndicator size="large" style={{ flex: 1, justifyContent: 'center' }} />;
     }
+
+    const filteredMenu = menu.filter((item) => {
+        const matchesCategory =
+            !selectedCategory || item.category.toLowerCase() === selectedCategory.toLowerCase();
+
+        const matchesSearch =
+            !searchQuery || item.title.toLowerCase().includes(searchQuery.toLowerCase());
+
+        return matchesCategory && matchesSearch;
+    });
 
     return (
         <ScrollView style={styles.container}>
@@ -75,6 +86,13 @@ const HomeScreen = () => {
                             placeholder="Enter search phrase"
                             placeholderTextColor="#888"
                             style={styles.searchInput}
+                            value={searchQuery}
+                            onChangeText={(text) => {
+                                setSearchQuery(text);
+                                if (text.length > 0) {
+                                    setSelectedCategory(null);
+                                }
+                            }}
                         />
                     </View>
 
@@ -95,16 +113,20 @@ const HomeScreen = () => {
                         return (
                             <Pressable
                                 key={category}
-                                onPress={() =>
-                                    setSelectedCategory(isSelected ? null : category)
-                                }
+                                onPress={() => {
+                                    const newSelection = selectedCategory === category ? null : category;
+                                    setSelectedCategory(newSelection);
+                                    if (newSelection) {
+                                        setSearchQuery(''); //clear search input
+                                    }
+                                }}
                                 style={[
                                     styles.categoryChip,
                                     {
                                         backgroundColor: isSelected ? '#495E57' : '#EDEFEE',
                                     },
-                                ]}
-                            >
+                                ]}>
+
                                 <Text
                                     style={{
                                         fontWeight: 'bold',
@@ -124,7 +146,7 @@ const HomeScreen = () => {
 
                 {/* Menu items */}
                 <View style={styles.menuSection}>
-                    {menu.map((item) => (
+                    {filteredMenu.map((item) => (
                         <View key={item.id} style={styles.menuItem}>
                             <View style={{ flex: 1 }}>
                                 <Text style={styles.menuTitle}>{item.title}</Text>
