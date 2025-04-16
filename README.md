@@ -1,27 +1,46 @@
-# Little Lemon Food Ordering App – Final Project
+# 🍋 Little Lemon Food Ordering App — Final Project
 
-This is the final project for the Meta React Native course on Coursera.
+This is the final project for the **Little Lemon** food ordering app, built using **React Native** with the **Expo** framework.
 
-## 🛠 Built With
+The app includes:
+- Onboarding flow that collects user details and stores them using AsyncStorage.
+- A scrollable Home screen with a search bar, category filters, and a food menu list.
+- A Profile screen displaying stored user data and a logout button.
+- Persistent navigation using React Navigation stack.
 
-- **React Native (Expo-based)**
-- Expo SDK: `52.0.46`
-- React Native: `0.76.9`
-- React: `18.3.1`
+---
 
-## 📦 Dependencies
+## 🧪 Tech Stack
 
-```json
-{
-  "@react-native-async-storage/async-storage": "1.23.1",
-  "@react-navigation/native": "^7.1.6",
-  "@react-navigation/native-stack": "^7.3.10",
-  "axios": "^1.8.4",
-  "expo": "~52.0.46",
-  "expo-font": "~13.0.4",
-  "expo-status-bar": "~2.0.1",
-  "react-native": "0.76.9",
-  "react-native-gesture-handler": "~2.20.2",
-  "react-native-safe-area-context": "4.12.0",
-  "react-native-screens": "~4.4.0"
-}
+- **React Native (Expo)**
+- **Expo SDK version:** `~52.0.46`
+- **React:** `18.3.1`
+- **React Native:** `0.76.9`
+- **Navigation:**
+  - `@react-navigation/native`
+  - `@react-navigation/native-stack`
+- **Async Storage:** `@react-native-async-storage/async-storage`
+- **Axios** for fetching menu items
+- **expo-font** for custom fonts
+
+---
+
+## 📐 Wireframe
+
+The Home screen was designed based on the wireframe shown below.  
+You can find the image in the project under the following path:
+
+📁 `assets/Wireframe_little_lemon_food_order_Final.jpg`
+
+![Wireframe](./assets/Wireframe_little_lemon_food_order_Final.jpg)
+
+---
+
+## Running the App
+
+To run the app locally:
+
+1. Install dependencies:
+
+```bash
+npm install
