@@ -1,14 +1,20 @@
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, ScrollView, StyleSheet, Image, Pressable } from 'react-native';
+import { View, Text, ActivityIndicator, ScrollView, StyleSheet, Image, Pressable, TextInput } from 'react-native';
 import { fetchMenuItems } from '../services/menuService';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 const HomeScreen = () => {
 
     const navigation = useNavigation();
     const [menu, setMenu] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    //temp
+    const categories = ['Starters', 'Mains', 'Desserts', 'Drinks'];
+
 
     useEffect(() => {
         const loadMenu = async () => {
@@ -61,8 +67,60 @@ const HomeScreen = () => {
                             style={styles.heroImage}
                         />
                     </View>
+
+                    <View style={styles.searchContainer}>
+                        <Ionicons name="search" size={18} color="#333" style={styles.searchIcon} />
+                        <TextInput
+                            placeholder="Enter search phrase"
+                            placeholderTextColor="#888"
+                            style={styles.searchInput}
+                        />
+                    </View>
+
                 </View>
             </View>
+            {/* Categries chips */}
+            <View style={styles.categorySection}>
+                <Text style={styles.categoryHeader}>ORDER FOR DELIVERY!</Text>
+
+                <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.categoryList}
+                >
+                    {categories.map((category) => {
+                        const isSelected = selectedCategory === category;
+
+                        return (
+                            <Pressable
+                                key={category}
+                                onPress={() =>
+                                    setSelectedCategory(isSelected ? null : category)
+                                }
+                                style={[
+                                    styles.categoryChip,
+                                    {
+                                        backgroundColor: isSelected ? '#495E57' : '#EDEFEE',
+                                    },
+                                ]}
+                            >
+                                <Text
+                                    style={{
+                                        fontWeight: 'bold',
+                                        color: isSelected ? 'white' : '#495E57',
+                                        fontSize: 14,
+                                    }}
+                                >
+                                    {category}
+                                </Text>
+                            </Pressable>
+                        );
+                    })}
+                </ScrollView>
+            </View>
+
+
+
         </ScrollView>
 
     );
@@ -123,7 +181,7 @@ const styles = StyleSheet.create(
             fontSize: 24,
             fontWeight: '600',
             marginTop: -8,
-            marginBottom: 12, 
+            marginBottom: 12,
 
         },
 
@@ -148,6 +206,51 @@ const styles = StyleSheet.create(
             resizeMode: 'cover',
             marginTop: 10
 
-        }
+        },
+
+        searchContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: 'white',
+            borderRadius: 8,
+            marginTop: 22,
+            paddingHorizontal: 10,
+            height: 40,
+        },
+
+        searchIcon: {
+            marginRight: 8,
+        },
+
+        searchInput: {
+            flex: 1,
+            fontSize: 14,
+            color: '#000',
+        },
+
+        // categories chips
+        categorySection: {
+            paddingHorizontal: 16,
+            paddingTop: 24,
+        },
+
+        categoryHeader: {
+            fontSize: 18,
+            fontWeight: 'bold',
+            marginBottom: 12,
+        },
+
+        categoryList: {
+            flexDirection: 'row',
+            gap: 12,
+        },
+
+        categoryChip: {
+            paddingVertical: 8,
+            paddingHorizontal: 16,
+            borderRadius: 24,
+        },
+
+
     }
 )
