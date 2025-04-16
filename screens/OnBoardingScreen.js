@@ -3,6 +3,7 @@ import { View, Text, TextInput, Pressable, StyleSheet, Image, ScrollView, Platfo
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { STORAGE_KEYS } from '../constants/storageKeys';
+import TopBar from '../components/TopBar';
 
 const OnBoardingScreen = () => {
     const navigation = useNavigation();
@@ -49,9 +50,7 @@ const OnBoardingScreen = () => {
 
                 <View style={styles.container}>
                     {/* Logo */}
-                    <Image
-                        source={require('../assets/logo.png')}
-                        style={styles.logo} />
+                    <TopBar />
 
                     {/* Banner */}
                     <View style={styles.banner}>
@@ -117,13 +116,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-    },
-    logo: {
-        width: 150,
-        height: 80,
-        marginTop: 20,
-        alignSelf: 'center',
-        resizeMode: "contain"
     },
 
     banner: {
