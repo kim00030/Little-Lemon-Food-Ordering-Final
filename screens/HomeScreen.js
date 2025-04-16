@@ -12,9 +12,9 @@ const HomeScreen = () => {
     const [loading, setLoading] = useState(true);
 
     const [selectedCategory, setSelectedCategory] = useState(null);
-    //temp
-    const categories = ['Starters', 'Mains', 'Desserts', 'Drinks'];
-
+    const categories = [...new Set(menu.map(item =>
+        item.category.charAt(0).toUpperCase() + item.category.slice(1)
+    ))];
 
     useEffect(() => {
         const loadMenu = async () => {
@@ -50,6 +50,7 @@ const HomeScreen = () => {
             {/* Other content goes below (with padding in their section) */}
             {/* Ex: HeroBanner, FilterRow, MenuList */}
 
+            {/* HeroBanner */}
             <View style={styles.banner}>
                 <View style={styles.bannerTextSection}>
                     <Text style={styles.bannerTitle}>Little Lemon</Text>
@@ -117,10 +118,25 @@ const HomeScreen = () => {
                         );
                     })}
                 </ScrollView>
+
+                {/* Divider */}
+                <View style={{ height: 1, backgroundColor: '#ccc', marginHorizontal: 16, marginTop: 12 }} />
+
+                {/* Menu items */}
+                <View style={styles.menuSection}>
+                    {menu.map((item) => (
+                        <View key={item.id} style={styles.menuItem}>
+                            <View style={{ flex: 1 }}>
+                                <Text style={styles.menuTitle}>{item.title}</Text>
+                                <Text style={styles.menuDescription} numberOfLines={2}>{item.description}</Text>
+                                <Text style={styles.menuPrice}>${Number(item.price).toFixed(2)}</Text>
+                            </View>
+                            <Image source={{ uri: item.image }} style={styles.menuImage} />
+                        </View>
+                    ))}
+                </View>
+
             </View>
-
-
-
         </ScrollView>
 
     );
@@ -172,16 +188,18 @@ const styles = StyleSheet.create(
 
         bannerTitle: {
             color: '#F4CE14',
-            fontSize: 28,
+            fontSize: 32,
             fontWeight: 'bold',
+            fontFamily: 'MarkaziText',
         },
 
         bannerSubtitle: {
             color: 'white',
-            fontSize: 24,
+            fontSize: 28,
             fontWeight: '600',
             marginTop: -8,
             marginBottom: 12,
+            fontFamily: 'MarkaziText',
 
         },
 
@@ -237,7 +255,7 @@ const styles = StyleSheet.create(
         categoryHeader: {
             fontSize: 18,
             fontWeight: 'bold',
-            marginBottom: 12,
+            marginBottom: 12
         },
 
         categoryList: {
@@ -250,7 +268,45 @@ const styles = StyleSheet.create(
             paddingHorizontal: 16,
             borderRadius: 24,
         },
+        // Menu items
+        menuSection: {
+            paddingHorizontal: 16,
+            marginTop: 20,
+            paddingBottom: 32,
+            gap: 16,
+        },
 
+        menuItem: {
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            gap: 12,
+        },
+
+        menuTitle: {
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: '#333',
+            marginBottom: 4,
+        },
+
+        menuDescription: {
+            fontSize: 14,
+            color: '#666',
+            marginBottom: 4,
+        },
+
+        menuPrice: {
+            fontSize: 14,
+            color: '#888',
+        },
+
+        menuImage: {
+            width: 80,
+            height: 80,
+            borderRadius: 8,
+            resizeMode: 'cover',
+        },
 
     }
 )

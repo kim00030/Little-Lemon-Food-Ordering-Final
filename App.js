@@ -7,10 +7,16 @@ import ProfileScreen from './screens/ProfileScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator, View } from 'react-native';
 import { STORAGE_KEYS } from './constants/storageKeys';
+import { useFonts } from 'expo-font';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
+  const [fontsLoaded] = useFonts({
+    Karla: require('./assets/fonts/karla_regular.ttf'),
+    MarkaziText: require('./assets/fonts/markazi_text_regular.ttf'),
+  });
 
   const [isLoading, setIsLoading] = useState(true);
   const [isRegistered, setIsRegistered] = useState(false);
@@ -38,6 +44,18 @@ export default function App() {
       </View>
     );
   }
+
+
+
+  if (!fontsLoaded) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={isRegistered ? 'Home' : 'OnBoard'}>
