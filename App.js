@@ -42,8 +42,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName={isRegistered ? 'Home' : 'OnBoard'}>
         <Stack.Screen name='OnBoard' component={OnBoardingScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='Home' component={HomeScreen} />
-        <Stack.Screen name='Profile' component={ProfileScreen} />
+        <Stack.Screen name='Home' component={HomeScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='Profile' component={ProfileScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
